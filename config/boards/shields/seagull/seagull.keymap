@@ -13,29 +13,29 @@
 #define _FIND_NEXT  _C(G)
 #define _FIND_PREV  _C(LS(G))
 
+
 / {
-macros {
-	// select current line
-	//
-	select_line: select_line {
-		compatible = "zmk,behavior-mod-morph";
-		#binding-cells = <0>;
-		bindings = <&select_line_right>, <&select_line_left>;
-		mods = <(MOD_LSFT|MOD_RSFT)>;
+
+	macros {
+		// select current line
+		//
+		select_line: select_line {
+			compatible = "zmk,behavior-mod-morph";
+			#binding-cells = <0>;
+			bindings = <&select_line_right>, <&select_line_left>;
+			mods = <(MOD_LSFT|MOD_RSFT)>;
+		};
+		ZMK_MACRO(select_line_right,
+			wait-ms = <SELECT_WORD_DELAY>;
+			tap-ms = <SELECT_WORD_DELAY>;
+			bindings = <&kp _HOME &kp LS(_END)>;
+		)
+		ZMK_MACRO(select_line_left,
+			wait-ms = <SELECT_WORD_DELAY>;
+			tap-ms = <SELECT_WORD_DELAY>;
+			bindings = <&kp _END &kp LS(_HOME)>;
+		)
 	};
-	ZMK_MACRO(select_line_right,
-		wait-ms = <SELECT_WORD_DELAY>;
-		tap-ms = <SELECT_WORD_DELAY>;
-		bindings = <&kp _HOME &kp LS(_END)>;
-	)
-	ZMK_MACRO(select_line_left,
-		wait-ms = <SELECT_WORD_DELAY>;
-		tap-ms = <SELECT_WORD_DELAY>;
-		bindings = <&kp _END &kp LS(_HOME)>;
-	)
-};
-};
-/ {
 
 	keymap {
 
