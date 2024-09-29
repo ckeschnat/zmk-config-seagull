@@ -19,26 +19,6 @@
 #endif
 
 / {
-	macros {
-		select_line: select_line {
-			compatible = "zmk,behavior-mod-morph";
-			#binding-cells = <0>;
-			bindings = <&select_line_right>, <&select_line_left>;
-			mods = <(MOD_LSFT|MOD_RSFT)>;
-		};
-
-		ZMK_MACRO(select_line_right,
-			wait-ms = <SELECT_WORD_DELAY>;
-			tap-ms = <SELECT_WORD_DELAY>;
-			bindings = <&kp HOME &kp LS(END)>;
-		)
-
-		ZMK_MACRO(select_line_left,
-			wait-ms = <SELECT_WORD_DELAY>;
-			tap-ms = <SELECT_WORD_DELAY>;
-			bindings = <&kp END &kp LS(HOME)>;
-		)
-	};
 
 	keymap {
 		compatible = "zmk,keymap";
