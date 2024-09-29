@@ -14,7 +14,9 @@
 #define _FIND_NEXT  _C(G)
 #define _FIND_PREV  _C(LS(G))
 
-#define SELECT_WORD_DELAY 30
+#ifndef SELECT_WORD_DELAY
+#define SELECT_WORD_DELAY 1
+#endif
 
 / {
 	macros {
