@@ -33,8 +33,8 @@ macros {
 		tap-ms = <SELECT_WORD_DELAY>;
 		bindings = <&kp _END &kp LS(_HOME)>;
 	)
-}
-}
+};
+};
 / {
 
 	keymap {
