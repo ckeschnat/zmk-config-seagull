@@ -1,11 +1,10 @@
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
-#include "zmk-helpers/helper.h"
 
 #define NUMPAD 0
 #define BLUETOOTH 1
-#define _C      LC
+#define _C(key)      &kp LC(key)
 #define _UNDO       _C(Z)
 #define _CUT        _C(X)
 #define _COPY       _C(C)
@@ -14,55 +13,57 @@
 #define _FIND_NEXT  _C(G)
 #define _FIND_PREV  _C(LS(G))
 
+#define SELECT_WORD_DELAY 30
+
 / {
+    macros {
+        select_line: select_line {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&select_line_right>, <&select_line_left>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
 
-	keymap {
-		compatible = "zmk,keymap";
+        select_line_right: select_line_right {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <SELECT_WORD_DELAY>;
+            tap-ms = <SELECT_WORD_DELAY>;
+            bindings = <&kp HOME &kp LS(END)>;
+        };
 
-		layer_numpad {
-			display-name = "Numpad";
+        select_line_left: select_line_left {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <SELECT_WORD_DELAY>;
+            tap-ms = <SELECT_WORD_DELAY>;
+            bindings = <&kp END &kp LS(HOME)>;
+        };
+    };
 
-			// +----------------------------+
-			// |  sl  |   8  |   9  |   *   |
-			// +------+------+------+-------+
-			// |   4  |   5  |   6  |  CUT  |
-			// +------+------+------+-------+-------+
-			// |   1  |   2  |   3  |  COPY | L-BT  |
-			// +------+------+------+-------+-------+
-			// |   0  |   .  |  +   | PASTE |
-			// +------+------+------+-------+
+    keymap {
+        compatible = "zmk,keymap";
 
-			bindings = <
-				&select_line    &kp KP_N9        &kp KP_N9        &kp KP_MULTIPLY
-				&kp KP_N4       &kp KP_N5        &kp KP_N6        &kp _CUT
-				&kp KP_N1       &kp KP_N2        &kp KP_N3        &kp _COPY    &tog BLUETOOTH
-				&kp KP_N0       &kp KP_DOT       &kp KP_PLUS      &kp _PASTE
-			>;
+        layer_numpad {
+            display-name = "Numpad";
+            bindings = <
+                &select_line    &kp KP_N9        &kp KP_N9        &kp KP_MULTIPLY
+                &kp KP_N4       &kp KP_N5        &kp KP_N6        _CUT
+                &kp KP_N1       &kp KP_N2        &kp KP_N3        _COPY           &tog BLUETOOTH
+                &kp KP_N0       &kp KP_DOT       &kp KP_PLUS      _PASTE
+            >;
+            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
+        };
 
-			sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
-		};
-
-		layer_bluetooth {
-			display-name = "BT";
-
-			// +---------------------------+
-			// |CLEAR |      |      |BTLDR |
-			// +------+------+------+------+
-			// |      |      |      |      |
-			// +------+------+------+------+-------+
-			// | PF1  | PF2  |  PF3 |      | L-BT  |
-			// +------+------+------+------+-------+
-			// |      |      |      |      |
-			// +------+------+------+------+
-
-			bindings = <
-				&bt BT_CLR      &none         &none           &bootloader
-				&none           &none         &none           &none
-				&bt BT_SEL 0    &bt BT_SEL 1  &bt BT_SEL 2    &none        &tog BLUETOOTH
-				&none           &none         &none           &none
-			>;
-
-			sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
-		};
-	};
+        layer_bluetooth {
+            display-name = "BT";
+            bindings = <
+                &bt BT_CLR      &none         &none           &bootloader
+                &none           &none         &none           &none
+                &bt BT_SEL 0    &bt BT_SEL 1  &bt BT_SEL 2    &none        &tog BLUETOOTH
+                &none           &none         &none           &none
+            >;
+            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
+        };
+    };
 };
